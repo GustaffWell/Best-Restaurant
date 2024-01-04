@@ -12,24 +12,23 @@ import java.time.LocalTime;
 @Service
 @AllArgsConstructor
 public class RestaurantService {
+
     private final RestaurantRepository restaurantRepository;
     private final UserRepository userRepository;
 
     @Transactional
     public void voteFor(int restaurantId, int userId, LocalTime currentTime) {
         User user = userRepository.getExisted(userId);
-        if (currentTime.isBefore(LocalTime.of(11, 0))) {
-            Integer selectedRestaurantId = user.getSelectedRestaurant();
-            if (selectedRestaurantId == null) {
-                user.setSelectedRestaurant(restaurantId);
-                userRepository.save(user);
-                restaurantRepository.addVote(restaurantId);
-            } else if (selectedRestaurantId != restaurantId) {
-                user.setSelectedRestaurant(restaurantId);
-                userRepository.save(user);
-                restaurantRepository.addVote(restaurantId);
-                restaurantRepository.takeVoteAway(selectedRestaurantId);
-            }
+        Integer selectedRestaurantId = user.getSelectedRestaurant();
+        if (selectedRestaurantId == null) {
+            user.setSelectedRestaurant(restaurantId);
+            userRepository.save(user);
+            restaurantRepository.addVote(restaurantId);
+        } else if (currentTime.isBefore(LocalTime.of(11, 0)) && selectedRestaurantId != restaurantId) {
+            user.setSelectedRestaurant(restaurantId);
+            userRepository.save(user);
+            restaurantRepository.addVote(restaurantId);
+            restaurantRepository.takeVoteAway(selectedRestaurantId);
         }
     }
 }
