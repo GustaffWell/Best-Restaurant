@@ -15,5 +15,5 @@ If it is after 11:00 then it is too late, vote can't be changed
 Each restaurant provides a new menu each day.    
 
 Technology stack: Spring Boot + Spring Data JPA + Swagger/OpenAPI 3.0  
-The API documentation is available in the following path:  
+The API documentation is available in the following path after starting the application:    
 http://localhost:8080/swagger-ui/index.html#
