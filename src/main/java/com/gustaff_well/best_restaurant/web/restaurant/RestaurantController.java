@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
 
@@ -27,7 +28,7 @@ import static org.slf4j.LoggerFactory.getLogger;
 @AllArgsConstructor
 public class RestaurantController {
 
-    static final String REST_URL = "/api/restaurant";
+    static final String REST_URL = "/api";
 
     private final Logger log = getLogger(RestaurantController.class);
 
@@ -35,10 +36,12 @@ public class RestaurantController {
 
     private RestaurantService restaurantService;
 
-    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/admin/restaurants", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Restaurant> createWithLocation(@Valid @RequestBody Restaurant restaurant) {
         log.info("create {}", restaurant);
         checkNew(restaurant);
+        restaurant.setDate(LocalDate.now());
+        restaurant.setVotes(0);
         Restaurant created = restaurantRepository.save(restaurant);
         URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path(REST_URL + "/{id}")
@@ -47,7 +50,7 @@ public class RestaurantController {
         return ResponseEntity.created(uriOfNewResource).body(created);
     }
 
-    @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PutMapping(value = "admin/restaurants/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void update(@Valid @RequestBody Restaurant restaurant, @PathVariable int id) {
         log.info("update {} with id={}", restaurant, id);
@@ -55,35 +58,35 @@ public class RestaurantController {
         restaurantRepository.save(restaurant);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("admin/restaurants/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable int id) {
         log.info("delete restaurant with id={}", id);
         restaurantRepository.deleteExisted(id);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("admin/restaurants/{id}")
     public Restaurant get(@PathVariable int id) {
         log.info("get restaurant with id={}", id);
         return restaurantRepository.getExisted(id);
     }
 
-    @GetMapping
+    @GetMapping("admin/restaurants")
     public List<Restaurant> getAll() {
-        log.info("get all restaurant");
+        log.info("get all restaurants");
         return restaurantRepository.findAll();
     }
 
-    @GetMapping("/with_dishes")
+    @GetMapping("/restaurants/with_dishes")
     public List<Restaurant> getAllWithDishes() {
         log.info("get all restaurant with dishes");
-        return restaurantRepository.getAllWithDishes();
+        return restaurantService.getAllWithDishes();
     }
 
-    @PutMapping("/vote_for/{restaurantId}")
+    @PutMapping("/restaurants/vote_for/{restaurantId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public  void voteFor(@AuthenticationPrincipal AuthUser authUser, @PathVariable int restaurantId) {
         log.info("vote for restaurant with id={}", restaurantId);
-        restaurantService.voteFor(restaurantId, authUser.id(), LocalTime.of(10, 0));
+        restaurantService.voteFor(restaurantId, authUser.id(), LocalTime.now());
     }
 }

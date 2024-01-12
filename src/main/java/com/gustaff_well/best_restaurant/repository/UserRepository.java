@@ -1,6 +1,5 @@
 package com.gustaff_well.best_restaurant.repository;
 
-
 import com.gustaff_well.best_restaurant.model.User;
 import com.gustaff_well.best_restaurant.util.exception.NotFoundException;
 import org.springframework.data.jpa.repository.Query;

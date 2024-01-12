@@ -2,6 +2,7 @@ package com.gustaff_well.best_restaurant.web.user;
 
 import com.gustaff_well.best_restaurant.HasIdAndEmail;
 import com.gustaff_well.best_restaurant.repository.UserRepository;
+import com.gustaff_well.best_restaurant.web.AuthUser;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
@@ -25,10 +26,24 @@ public class UniqueMailValidator implements org.springframework.validation.Valid
 
     @Override
     public void validate(@NonNull Object target, @NonNull Errors errors) {
-//        HasIdAndEmail user = ((HasIdAndEmail) target);
-//        if (StringUtils.hasText(user.getEmail())) {
-//            repository.getByEmail(user.getEmail())
-//                    .ifPresent
-//        }
+        HasIdAndEmail user = ((HasIdAndEmail) target);
+        if (StringUtils.hasText(user.getEmail())) {
+            repository.findByEmailIgnoreCase(user.getEmail())
+                    .ifPresent(dbUser -> {
+                        if (request.getMethod().equals("PUT")) {
+                            int dbId = dbUser.id();
+
+                            if (user.getId() != null && dbId == user.id()) {
+                                return;
+                            }
+
+                            String requestURI = request.getRequestURI();
+                            if (requestURI.endsWith("/" + dbId) || (dbId == AuthUser.authId() && requestURI.contains("/profile"))){
+                                return;
+                            }
+                        }
+                        errors.rejectValue("email", "", EXCEPTION_DUPLICATE_EMAIL);
+                    });
+        }
     }
 }

@@ -13,6 +13,7 @@ import java.net.URI;
 import java.util.List;
 
 import static com.gustaff_well.best_restaurant.validation.ValidationUtil.assureIdConsistent;
+import static com.gustaff_well.best_restaurant.validation.ValidationUtil.checkNew;
 
 @RestController
 @RequestMapping(value = AdminController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -23,6 +24,7 @@ public class AdminController extends AbstractUserController {
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<User> createWithLocation(@Valid @RequestBody User user) {
         log.info("create {}", user);
+        checkNew(user);
         User created = userRepository.prepareAndSave(user);
         URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path(REST_URL + "/{id}")

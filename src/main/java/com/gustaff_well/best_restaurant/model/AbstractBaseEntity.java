@@ -4,9 +4,6 @@ import com.gustaff_well.best_restaurant.HasId;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import lombok.*;
-import org.springframework.util.Assert;
-
-
 
 @MappedSuperclass
 @Access(AccessType.FIELD)
@@ -16,11 +13,6 @@ import org.springframework.util.Assert;
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 public abstract class AbstractBaseEntity implements HasId {
 
-    public static final int START_SEQ = 100_000;
-
-//    @Id
-//    @SequenceGenerator(name = "global_seq", sequenceName = "global_seq", allocationSize = 1, initialValue = START_SEQ)
-//    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "global_seq")
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Schema(accessMode = Schema.AccessMode.READ_ONLY)

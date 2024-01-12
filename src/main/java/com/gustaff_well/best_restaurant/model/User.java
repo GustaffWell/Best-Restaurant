@@ -1,7 +1,9 @@
 package com.gustaff_well.best_restaurant.model;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.gustaff_well.best_restaurant.HasIdAndEmail;
 import com.gustaff_well.best_restaurant.validation.NoHtml;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
@@ -12,6 +14,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.EnumSet;
 import java.util.Set;
@@ -21,7 +24,7 @@ import java.util.Set;
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class User extends AbstractNamedEntity{
+public class User extends AbstractNamedEntity implements HasIdAndEmail {
 
     @Column(name = "email", nullable = false, unique = true)
     @Email
@@ -37,6 +40,7 @@ public class User extends AbstractNamedEntity{
     private String password;
 
     @Column(name = "selected_restaurant")
+    @JsonIgnore
     private Integer selectedRestaurant;
 
     @Enumerated(EnumType.STRING)
@@ -51,12 +55,17 @@ public class User extends AbstractNamedEntity{
     }
 
     public User(Integer id, String name, String email, String password,
-                Integer selectedRestaurant, Set<Role> roles) {
+                Integer selectedRestaurant, Collection<Role> roles) {
         super(id, name);
         this.email = email;
         this.password = password;
         this.selectedRestaurant = selectedRestaurant;
-        this.roles = roles;
+        setRoles(roles);
+    }
+
+    public User(Integer id, String name, String email, String password,
+                Integer selectedRestaurant, Role... roles) {
+        this(id, name, email, password, selectedRestaurant, Arrays.asList(roles));
     }
 
     public void setRoles(Collection<Role> roles) {

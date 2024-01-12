@@ -2,6 +2,7 @@ package com.gustaff_well.best_restaurant.repository;
 
 import com.gustaff_well.best_restaurant.model.Dish;
 import com.gustaff_well.best_restaurant.util.exception.DataConflictException;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,6 +21,7 @@ public interface DishRepository extends BaseRepository<Dish> {
                         " is not exist or doesn't belong to Restaurant with id=" + restaurantId));
     }
 
+    @Cacheable(value = "dishes")
     @Query("SELECT d FROM Dish d WHERE d.restaurant.id=:restaurantId ORDER BY d.restaurant.id")
     List<Dish> getAll(int restaurantId);
 }

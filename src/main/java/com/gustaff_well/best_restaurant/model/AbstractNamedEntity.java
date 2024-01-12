@@ -1,6 +1,6 @@
 package com.gustaff_well.best_restaurant.model;
 
-
+import com.gustaff_well.best_restaurant.validation.NoHtml;
 import jakarta.persistence.Column;
 import jakarta.persistence.MappedSuperclass;
 import jakarta.validation.constraints.NotBlank;
@@ -19,6 +19,7 @@ public class AbstractNamedEntity extends AbstractBaseEntity{
     @NotBlank
     @Size(min = 2, max = 128)
     @Column(name = "name", nullable = false)
+    @NoHtml
     protected String name;
 
     protected AbstractNamedEntity(Integer id, String name) {

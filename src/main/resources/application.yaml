@@ -11,10 +11,14 @@ spring:
                 format_sql: true
                 default_batch_fetch_size: 20
                 jdbc.batch_size: 20
+                order_updates: true
+                batch_versioned_data: true
+
     datasource:
         url: jdbc:h2:mem:best_restaurant_db
         username: user
         password: password
+        
 
     jackson.visibility:
         field: any
@@ -22,6 +26,21 @@ spring:
         setter: none
         is-getter: none
 
+#    cache:
+#        cache-names: dishes
+#        caffeine.spec: maximumSize=5000,expireAfterAccess=60s
+
+logging:
+    level:
+        root: WARN
+        com.gustaff_well.best_restaurant: DEBUG
+        org.springframework.web.servlet.mvc.method.annotation.ExceptionHandlerExceptionResolver: DEBUG
+
+server.servlet:
+    encoding:
+        charset: UTF-8
+        enabled: true
+        force: true
 
 
 springdoc.swagger-ui.path: /

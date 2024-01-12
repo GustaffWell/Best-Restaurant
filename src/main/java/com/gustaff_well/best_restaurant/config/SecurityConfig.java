@@ -47,8 +47,6 @@ public class SecurityConfig {
         http.securityMatcher("/api/**").authorizeHttpRequests(authz ->
                 authz.requestMatchers("/api/admin/**").hasRole(Role.ADMIN.name())
                         .requestMatchers(HttpMethod.POST, "/api/profile").anonymous()
-                        .requestMatchers("/api/restaurant/with_dishes", "/api/restaurant/vote_for/**").authenticated()
-                        .requestMatchers("/api/restaurant/**").hasRole(Role.ADMIN.name())
                         .requestMatchers("/api/**").authenticated())
                 .httpBasic(hbc -> hbc.authenticationEntryPoint(authenticationEntryPoint))
                 .sessionManagement(smc -> smc.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

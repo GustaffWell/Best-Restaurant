@@ -1,6 +1,8 @@
 package com.gustaff_well.best_restaurant.web.user;
 
 import com.gustaff_well.best_restaurant.model.User;
+import com.gustaff_well.best_restaurant.to.UserTo;
+import com.gustaff_well.best_restaurant.util.UsersUtil;
 import com.gustaff_well.best_restaurant.web.AuthUser;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -36,10 +38,10 @@ public class ProfileController extends AbstractUserController {
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<User> register(@Valid @RequestBody User user) {
-        log.info("register {}", user);
-        checkNew(user);
-        User created = userRepository.prepareAndSave(user);
+    public ResponseEntity<User> register(@Valid @RequestBody UserTo userTo) {
+        log.info("register {}", userTo);
+        checkNew(userTo);
+        User created = userRepository.prepareAndSave(UsersUtil.createNewFromTo(userTo));
         URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path(REST_URL).build().toUri();
         return ResponseEntity.created(uriOfNewResource).body(created);
@@ -48,9 +50,10 @@ public class ProfileController extends AbstractUserController {
     @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @Transactional
-    public void update(@RequestBody @Valid User user, @AuthenticationPrincipal AuthUser authUser) {
-        log.info("update {} with id={}", user, authUser.id());
-        assureIdConsistent(user, authUser.id());
-        userRepository.prepareAndSave(user);
+    public void update(@RequestBody @Valid UserTo userTo, @AuthenticationPrincipal AuthUser authUser) {
+        log.info("update {} with id={}", userTo, authUser.id());
+        assureIdConsistent(userTo, authUser.id());
+        User user = authUser.getUser();
+        userRepository.prepareAndSave(UsersUtil.updateFromTo(user, userTo));
     }
 }

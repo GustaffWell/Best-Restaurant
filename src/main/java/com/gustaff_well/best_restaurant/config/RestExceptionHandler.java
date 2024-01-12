@@ -52,6 +52,7 @@ public class RestExceptionHandler {
             put(DataConflictException.class, DATA_CONFLICT);
             put(IllegalRequestDataException.class, BAD_REQUEST);
             put(AppException.class, APP_ERROR);
+            put(VoteException.class, APP_ERROR);
             put(UnsupportedOperationException.class, APP_ERROR);
             put(EntityNotFoundException.class, DATA_CONFLICT);
             put(DataIntegrityViolationException.class, DATA_CONFLICT);
@@ -97,7 +98,7 @@ public class RestExceptionHandler {
                 messageSource.getMessage(error.getCode(), error.getArguments(), error.getDefaultMessage(), LocaleContextHolder.getLocale());
     }
 
-    @ExceptionHandler(Exception.class)
+    @ExceptionHandler({Exception.class, VoteException.class})
     ProblemDetail exception(Exception ex, HttpServletRequest request) {
         return processException(ex, request, Map.of());
     }
