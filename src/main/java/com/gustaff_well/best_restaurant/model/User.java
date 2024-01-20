@@ -1,7 +1,6 @@
 package com.gustaff_well.best_restaurant.model;
 
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.gustaff_well.best_restaurant.HasIdAndEmail;
 import com.gustaff_well.best_restaurant.validation.NoHtml;
@@ -39,10 +38,6 @@ public class User extends AbstractNamedEntity implements HasIdAndEmail {
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 
-    @Column(name = "selected_restaurant")
-    @JsonIgnore
-    private Integer selectedRestaurant;
-
     @Enumerated(EnumType.STRING)
     @CollectionTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"),
         uniqueConstraints = {@UniqueConstraint(columnNames = {"user_id", "role"}, name = "uc_user_role")})
@@ -51,21 +46,18 @@ public class User extends AbstractNamedEntity implements HasIdAndEmail {
     private Set<Role> roles;
 
     public User(User u) {
-        this(u.id, u.name, u.email, u.password, u.selectedRestaurant, u.roles);
+        this(u.id, u.name, u.email, u.password, u.roles);
     }
 
-    public User(Integer id, String name, String email, String password,
-                Integer selectedRestaurant, Collection<Role> roles) {
+    public User(Integer id, String name, String email, String password, Collection<Role> roles) {
         super(id, name);
         this.email = email;
         this.password = password;
-        this.selectedRestaurant = selectedRestaurant;
         setRoles(roles);
     }
 
-    public User(Integer id, String name, String email, String password,
-                Integer selectedRestaurant, Role... roles) {
-        this(id, name, email, password, selectedRestaurant, Arrays.asList(roles));
+    public User(Integer id, String name, String email, String password, Role... roles) {
+        this(id, name, email, password, Arrays.asList(roles));
     }
 
     public void setRoles(Collection<Role> roles) {

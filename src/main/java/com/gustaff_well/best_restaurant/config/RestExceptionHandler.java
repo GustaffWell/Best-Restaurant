@@ -52,7 +52,7 @@ public class RestExceptionHandler {
             put(DataConflictException.class, DATA_CONFLICT);
             put(IllegalRequestDataException.class, BAD_REQUEST);
             put(AppException.class, APP_ERROR);
-            put(VoteException.class, APP_ERROR);
+            put(VoteException.class, BAD_REQUEST);
             put(UnsupportedOperationException.class, APP_ERROR);
             put(EntityNotFoundException.class, DATA_CONFLICT);
             put(DataIntegrityViolationException.class, DATA_CONFLICT);

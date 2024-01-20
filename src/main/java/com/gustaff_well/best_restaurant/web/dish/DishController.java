@@ -1,14 +1,10 @@
 package com.gustaff_well.best_restaurant.web.dish;
 
-import com.gustaff_well.best_restaurant.service.DishService;
 import com.gustaff_well.best_restaurant.model.Dish;
 import com.gustaff_well.best_restaurant.repository.DishRepository;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.cache.CacheManager;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -17,7 +13,6 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.util.List;
-import java.util.Objects;
 
 import static com.gustaff_well.best_restaurant.validation.ValidationUtil.assureIdConsistent;
 import static com.gustaff_well.best_restaurant.validation.ValidationUtil.checkNew;
@@ -31,15 +26,12 @@ public class DishController {
     static final String REST_URL = "/api/admin/dishes";
 
     private DishRepository dishRepository;
-    private DishService dishService;
-    private CacheManager cacheManager;
 
-    @PostMapping(value = "/for/{restaurantId}",consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Dish> createWithLocation(@Valid @RequestBody Dish dish, @PathVariable int restaurantId) {
-        evictAllCacheValues("dishes");
-        log.info("create dish {} for restaurant {}", dish, restaurantId);
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Dish> createWithLocation(@Valid @RequestBody Dish dish) {
+        log.info("create dish {}", dish);
         checkNew(dish);
-        Dish created = dishService.save(restaurantId, dish);
+        Dish created = dishRepository.save(dish);
         URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path(REST_URL + "/{id}")
                 .buildAndExpand(created.getId()).toUri();
@@ -47,38 +39,30 @@ public class DishController {
         return ResponseEntity.created(uriOfNewResource).body(created);
     }
 
-    @PutMapping(value = "/{id}/for/{restaurantId}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void update(@PathVariable int restaurantId, @PathVariable int id, @Valid @RequestBody Dish dish) {
-        evictAllCacheValues("dishes");
-        log.info("update dish with id={} for restaurant with id={}", id, restaurantId);
+    public void update(@PathVariable int id, @Valid @RequestBody Dish dish) {
+        log.info("update dish {} with id={}", dish, id);
         assureIdConsistent(dish, id);
-        dishRepository.getBelonged(restaurantId, id);
-        dishService.save(restaurantId, dish);
+        dishRepository.save(dish);
     }
 
-    @GetMapping("/{id}/for/{restaurantId}")
-    public ResponseEntity<Dish> get(@PathVariable int restaurantId, @PathVariable int id) {
+    @GetMapping("/{id}")
+    public Dish get(@PathVariable int id) {
         log.info("get dish with id={}", id);
-        return ResponseEntity.of(dishRepository.get(restaurantId, id));
+        return dishRepository.getExisted(id);
     }
 
-    @GetMapping("/for/{restaurantId}")
-    public List<Dish> getAll(@PathVariable int restaurantId) {
-        log.info("getAll for restaurant with id={}", restaurantId);
-        return dishRepository.getAll(restaurantId);
+    @GetMapping
+    public List<Dish> getAll() {
+        log.info("getAll dishes");
+        return dishRepository.findAll();
     }
 
-    @DeleteMapping("{id}/for/{restaurantId}")
+    @DeleteMapping("{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void delete(@PathVariable int restaurantId, @PathVariable int id) {
-        evictAllCacheValues("dishes");
-        log.info("delete dish with id={} for restaurant with id={}", id, restaurantId);
-        Dish dish = dishRepository.getBelonged(restaurantId, id);
-        dishRepository.delete(dish);
-    }
-
-    private void evictAllCacheValues(String cacheName) {
-        Objects.requireNonNull(cacheManager.getCache(cacheName)).clear();
+    public void delete(@PathVariable int id) {
+        log.info("delete dish with id={}", id);
+        dishRepository.deleteExisted(id);
     }
 }

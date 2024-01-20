@@ -20,13 +20,19 @@ VALUES ('ADMIN', 1),
        ('USER', 2),
        ('USER', 3);
 
-INSERT INTO RESTAURANT (name, date)
-VALUES  ('Tokyo City', CURRENT_DATE),
-        ('Afterlife', CURRENT_DATE);
+INSERT INTO RESTAURANT (name)
+VALUES  ('Tokyo City'),
+        ('Afterlife'),
+        ('Titanic 2000');
 
-INSERT INTO DISH (restaurant_id, name, price)
-VALUES (1, 'Том Ям', 800),
-       (1, 'Пепперони', 500),
-       (2, 'Джонни Сильверхенд', 450),
-       (2, 'Bloody Marry', 550);
+INSERT INTO DISH (name, price)
+VALUES ('Том Ям', 800),
+       ('Пепперони', 500),
+       ('Джонни Сильверхенд', 450),
+       ('Bloody Marry', 550);
+
+INSERT INTO MENU (date, restaurant_id)
+VALUES  (CURRENT_DATE, 1),
+        (CURRENT_DATE, 2)
+
 

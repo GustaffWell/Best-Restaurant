@@ -1,7 +1,6 @@
 package com.gustaff_well.best_restaurant.web.restaurant;
 
 import com.gustaff_well.best_restaurant.repository.RestaurantRepository;
-import com.gustaff_well.best_restaurant.service.RestaurantService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
