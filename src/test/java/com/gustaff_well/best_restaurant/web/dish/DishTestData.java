@@ -4,7 +4,7 @@ import com.gustaff_well.best_restaurant.model.Dish;
 import com.gustaff_well.best_restaurant.web.MatcherFactory;
 
 public class DishTestData {
-    public static final MatcherFactory.Matcher<Dish> DISH_MATCHER = MatcherFactory.usingIgnoringFieldsComparator(Dish.class, "restaurant");
+    public static final MatcherFactory.Matcher<Dish> DISH_MATCHER = MatcherFactory.usingIgnoringFieldsComparator(Dish.class);
     public static final int DISH_1_ID = 1;
     public static final int DISH_2_ID = 2;
     public static final int DISH_3_ID = 3;

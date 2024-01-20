@@ -2,6 +2,7 @@ package com.gustaff_well.best_restaurant.web.user;
 
 import com.gustaff_well.best_restaurant.model.User;
 import com.gustaff_well.best_restaurant.repository.UserRepository;
+import com.gustaff_well.best_restaurant.service.UserService;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.WebDataBinder;
@@ -15,6 +16,9 @@ public abstract class AbstractUserController {
 
     @Autowired
     protected UserRepository userRepository;
+
+    @Autowired
+    protected UserService userService;
 
     @Autowired
     private UniqueMailValidator emailValidator;

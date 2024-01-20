@@ -45,7 +45,7 @@ public class ProfileControllerTest extends AbstractControllerTest {
     void delete() throws Exception {
         perform(MockMvcRequestBuilders.delete(REST_URL))
                 .andExpect(status().isNoContent());
-        USER_MATCHER.assertMatch(userRepository.findAll(), admin, user2, guest);
+        USER_MATCHER.assertMatch(userRepository.findAll(), deleted, admin, user2, guest);
     }
 
     @Test

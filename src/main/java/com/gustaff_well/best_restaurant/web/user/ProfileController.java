@@ -33,7 +33,7 @@ public class ProfileController extends AbstractUserController {
     @DeleteMapping
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@AuthenticationPrincipal AuthUser authUser) {
-        super.delete(authUser.id());
+        userService.deleteUser(authUser.getUser());
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)

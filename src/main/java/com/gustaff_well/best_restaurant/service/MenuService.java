@@ -63,13 +63,13 @@ public class MenuService {
     }
 
     @Transactional
-    public void vote(int menuId, User user, LocalDate currentDate) {
+    public void vote(int menuId, User user, LocalTime currentTime) {
         log.info("vote for menu with id={}", menuId);
+        LocalDate currentDate = LocalDate.now();
         Menu selectedMenu = menuRepository.getExisted(menuId);
         if (selectedMenu.getDate().isEqual(currentDate)) {
             UserSelection userSelection = userSelectionRepository.findByUserIdAndDate(user.id());
             List<User> selectedMenuUsers = selectedMenu.getUsers();
-            LocalTime currentTime = LocalTime.now();
             if (userSelection == null) {
                 selectedMenuUsers.add(user);
                 userSelection = new UserSelection(null, user.id(), currentDate, menuId);

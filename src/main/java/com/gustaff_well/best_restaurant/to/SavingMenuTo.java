@@ -14,7 +14,7 @@ public class SavingMenuTo {
     LocalDate localDate;
 
     @NotNull
-    int restaurantId;
+    Integer restaurantId;
 
     @Override
     public String toString() {

@@ -1,9 +1,11 @@
 package com.gustaff_well.best_restaurant.model;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.gustaff_well.best_restaurant.HasIdAndEmail;
 import com.gustaff_well.best_restaurant.validation.NoHtml;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -13,10 +15,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.EnumSet;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 @Table(name = "users")
@@ -44,6 +43,14 @@ public class User extends AbstractNamedEntity implements HasIdAndEmail {
     @Column(name = "role")
     @ElementCollection(fetch = FetchType.EAGER)
     private Set<Role> roles;
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable( name = "menu_users",
+            joinColumns = {@JoinColumn(name = "user_id")},
+            inverseJoinColumns = {@JoinColumn(name = "menu_id")})
+    @Schema(accessMode = Schema.AccessMode.READ_ONLY)
+    @JsonIgnore
+    private List<Menu> menus;
 
     public User(User u) {
         this(u.id, u.name, u.email, u.password, u.roles);

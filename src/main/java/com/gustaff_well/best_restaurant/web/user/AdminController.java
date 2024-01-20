@@ -1,7 +1,9 @@
 package com.gustaff_well.best_restaurant.web.user;
 
 import com.gustaff_well.best_restaurant.model.User;
+import com.gustaff_well.best_restaurant.service.UserService;
 import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -45,7 +47,7 @@ public class AdminController extends AbstractUserController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable int id) {
         log.info("delete user with id={}", id);
-        super.delete(id);
+        userService.deleteUser(userRepository.getExisted(id));
     }
 
     @Override

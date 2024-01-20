@@ -4,8 +4,8 @@ import com.gustaff_well.best_restaurant.model.Dish;
 import com.gustaff_well.best_restaurant.model.Menu;
 import com.gustaff_well.best_restaurant.repository.MenuRepository;
 import com.gustaff_well.best_restaurant.service.MenuService;
-import com.gustaff_well.best_restaurant.to.SavingMenuTo;
 import com.gustaff_well.best_restaurant.to.MenuTo;
+import com.gustaff_well.best_restaurant.to.SavingMenuTo;
 import com.gustaff_well.best_restaurant.web.AuthUser;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
-import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 
 import static com.gustaff_well.best_restaurant.validation.ValidationUtil.assureIdConsistent;
@@ -88,7 +88,7 @@ public class MenuController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void vote(@PathVariable int id, @AuthenticationPrincipal AuthUser authUser) {
         log.info("vote user with id={} for menu with id={}", authUser.id(), id);
-        menuService.vote(id, authUser.getUser(), LocalDate.now());
+        menuService.vote(id, authUser.getUser(), LocalTime.now());
     }
 
     @PutMapping(value = "/admin/menus/{id}/dishes/{dishId}")

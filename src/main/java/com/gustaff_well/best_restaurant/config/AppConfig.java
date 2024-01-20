@@ -47,7 +47,7 @@ public class AppConfig {
     }
 
     @Bean
-    MenuPopulator dbPopulater() {
+    MenuPopulator menuPopulater() {
         return new MenuPopulator();
     }
 }

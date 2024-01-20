@@ -2,6 +2,7 @@ package com.gustaff_well.best_restaurant.web.restaurant;
 
 import com.gustaff_well.best_restaurant.model.Restaurant;
 import com.gustaff_well.best_restaurant.repository.RestaurantRepository;
+import com.gustaff_well.best_restaurant.service.RestaurantService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -26,6 +27,7 @@ public class RestaurantController {
     static final String REST_URL = "/api/admin/restaurants";
 
     private RestaurantRepository restaurantRepository;
+    private RestaurantService restaurantService;
 
     @PostMapping( consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Restaurant> createWithLocation(@Valid @RequestBody Restaurant restaurant) {
@@ -51,7 +53,7 @@ public class RestaurantController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable int id) {
         log.info("delete restaurant with id={}", id);
-        restaurantRepository.deleteExisted(id);
+        restaurantService.delete(id);
     }
 
     @GetMapping("/{id}")

@@ -14,6 +14,9 @@ VALUES  ('Admin', 'admin@gmail.com', '{noop}admin'),
         ('User2', 'user2@gmail.com', '{noop}password'),
         ('Guest', 'guest@gmail.com', '{noop}guest');
 
+INSERT INTO users (id,name, email, password)
+VALUES  (0 ,'deleted', 'deleted@gmail.com', '{noop}deleted');
+
 INSERT INTO user_role (role, user_id)
 VALUES ('ADMIN', 1),
        ('USER', 1),
