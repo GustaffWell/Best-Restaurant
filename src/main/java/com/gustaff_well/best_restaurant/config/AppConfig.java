@@ -23,7 +23,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 
 @Configuration
 @Slf4j
-@EnableCaching
 public class AppConfig {
 
     @Profile("!test")
@@ -47,7 +46,7 @@ public class AppConfig {
     }
 
     @Bean
-    MenuPopulator menuPopulater() {
+    MenuPopulator menuPopulator() {
         return new MenuPopulator();
     }
 }

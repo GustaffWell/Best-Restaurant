@@ -3,12 +3,6 @@ package com.gustaff_well.best_restaurant.web.restaurant;
 import com.gustaff_well.best_restaurant.model.Restaurant;
 import com.gustaff_well.best_restaurant.web.MatcherFactory;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
-import java.util.List;
-
-import static com.gustaff_well.best_restaurant.web.dish.DishTestData.*;
-
 public class RestaurantTestData {
     public static final MatcherFactory.Matcher<Restaurant> RESTAURANT_MATCHER = MatcherFactory.usingIgnoringFieldsComparator(Restaurant.class);
     public static final int RESTAURANT_1_ID = 1;

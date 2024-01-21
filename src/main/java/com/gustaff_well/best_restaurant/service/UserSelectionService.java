@@ -20,6 +20,8 @@ public class UserSelectionService {
     private UserSelectionRepository userSelectionRepository;
     private MenuRepository menuRepository;
 
+    private static final MenuTo notSelected = new MenuTo(0, "not selected", null, 0);
+
     @Transactional
     public MenuTo getCurrentSelectedMenu(AuthUser authUser) {
         log.info("get current selected menu for user with id={}", authUser.id());
@@ -28,6 +30,6 @@ public class UserSelectionService {
             Menu menu = menuRepository.getWithDishes(userSelection.getMenuId());
             return MenuUtil.createMenuTo(menu);
         }
-        return null;
+        return notSelected;
     }
 }

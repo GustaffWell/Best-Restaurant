@@ -1,6 +1,5 @@
 package com.gustaff_well.best_restaurant.web.user_selection;
 
-import com.gustaff_well.best_restaurant.model.Menu;
 import com.gustaff_well.best_restaurant.service.UserSelectionService;
 import com.gustaff_well.best_restaurant.to.MenuTo;
 import com.gustaff_well.best_restaurant.web.AuthUser;

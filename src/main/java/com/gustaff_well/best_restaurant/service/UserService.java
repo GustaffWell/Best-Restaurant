@@ -21,6 +21,7 @@ public class UserService {
 
     @Transactional
     public void deleteUser(User user) {
+        log.info("delete user {}", user);
         List<Menu> menus = menuRepository.getAllWithUsers();
         User deleted = userRepository.getExisted(0);
         for (Menu menu : menus) {

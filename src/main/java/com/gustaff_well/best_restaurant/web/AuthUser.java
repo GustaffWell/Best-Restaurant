@@ -3,7 +3,7 @@ package com.gustaff_well.best_restaurant.web;
 import com.gustaff_well.best_restaurant.model.Role;
 import com.gustaff_well.best_restaurant.model.User;
 import lombok.Getter;
-import org.jetbrains.annotations.NotNull;
+import org.springframework.lang.NonNull;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
@@ -14,7 +14,7 @@ public class AuthUser extends org.springframework.security.core.userdetails.User
     @Getter
     private final User user;
 
-    public AuthUser(@NotNull User user) {
+    public AuthUser(@NonNull User user) {
         super(user.getEmail(), user.getPassword(), user.getRoles());
         this.user = user;
     }
